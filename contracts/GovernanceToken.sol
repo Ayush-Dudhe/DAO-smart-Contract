@@ -6,7 +6,11 @@ import "@openzeppelin/contracts/utils/cryptography/draft-EIP712.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/draft-ERC721Votes.sol";
 
 contract GovernanceToken is ERC721, EIP712, ERC721Votes {
-  constructor() ERC721("DAOToken", "GDAO") EIP712("DAOToken", "1") {}
+  constructor(
+    string memory _tokenName,
+    string memory _tokenSymbol,
+    string memory _version
+  ) ERC721(_tokenName, _tokenSymbol) EIP712(_tokenName, _version) {}
 
   // The following functions are overrides required by Solidity.
 
@@ -19,9 +23,8 @@ contract GovernanceToken is ERC721, EIP712, ERC721Votes {
     super._afterTokenTransfer(from, to, tokenId, batchSize);
   }
 
-  function mintNFT(address _to, uint256 tokenId) public returns (uint256) {
-    _safeMint(_to, tokenId);
-    return tokenId;
+  function mintNFT(address _to, uint256 _tokenId) public {
+    _safeMint(_to, _tokenId);
   }
 
   function _baseURI() internal pure override(ERC721) returns (string memory) {

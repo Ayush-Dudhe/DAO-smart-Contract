@@ -1,4 +1,9 @@
 const { verify } = require("../utils/verify")
+const {
+  tokenName,
+  tokenSymbol,
+  daoVersion,
+} = require("../helper-hardhat-config")
 
 module.exports.default = async (hre) => {
   const { getNamedAccounts, deployments } = hre
@@ -7,7 +12,7 @@ module.exports.default = async (hre) => {
 
   const chainId = network.config.chainId
 
-  const args = []
+  const args = [tokenName, tokenSymbol, daoVersion]
   const governanceToken = await deploy("GovernanceToken", {
     from: deployer,
     args: args,
