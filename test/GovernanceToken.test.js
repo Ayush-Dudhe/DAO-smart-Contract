@@ -6,7 +6,6 @@ const {
   daoVersion,
 } = require("../helper-hardhat-config")
 const { assert, expect } = require("chai")
-const { parse } = require("typechain")
 
 !developmentChains.includes(network.name)
   ? descrive.skip
@@ -141,6 +140,84 @@ const { parse } = require("typechain")
 
           assert.equal(VotingUnitsOfDeployer, 0)
           assert.equal(VotingUnitsOfUser, 1)
+        })
+      })
+
+      describe("Mint multiple tokens for same user", async function () {
+        let deployer, user, user2
+        beforeEach(async function () {
+          deployer = (await getNamedAccounts()).deployer
+          user = (await getNamedAccounts()).user
+          user2 = (await getNamedAccounts()).user2
+          let token1Minted = await GovernanceToken.mintNFT(user, 1)
+          await token1Minted.wait(1)
+          let token2Minted = await GovernanceToken.mintNFT(user, 2)
+          await token1Minted.wait(1)
+        })
+
+        it("Multiple token minted correctly for the user", async function () {
+          const totalTokensAssociatedWithUser = await GovernanceToken.balanceOf(
+            user
+          )
+          assert.equal(totalTokensAssociatedWithUser.toString(), "2")
+        })
+
+        it("Voting Units are appropriately set for the user with multiple tokens", async function () {
+          const totalVotingUnits = await GovernanceToken.getVotingUnits(user)
+          const totalTokensAssociatedWithUser = await GovernanceToken.balanceOf(
+            user
+          )
+          assert.equal(
+            totalTokensAssociatedWithUser.toString(),
+            totalVotingUnits.toString()
+          )
+        })
+
+        it("Non-owner cannot set approval for all", async function () {
+          await expect(
+            GovernanceToken.setApprovalForAll(deployer, true)
+          ).to.be.revertedWith("ERC721: approve to caller")
+        })
+
+        it("Owner can set approval for all", async function () {
+          /* Impersonate Governor Contract using owner of NFT */
+
+          await hre.network.provider.request({
+            method: "hardhat_impersonateAccount",
+            params: [user],
+          })
+
+          signer = await ethers.getSigner(user)
+
+          await GovernanceToken.connect(signer).setApprovalForAll(
+            deployer,
+            true
+          )
+
+          await hre.network.provider.request({
+            method: "hardhat_stopImpersonatingAccount",
+            params: [user],
+          })
+          /******************************************* */
+
+          const transferToken = await GovernanceToken.transferFrom(
+            user,
+            user2,
+            1
+          )
+          await transferToken.wait(1)
+
+          const isApprovedForAll = await GovernanceToken.isApprovedForAll(
+            user,
+            deployer
+          )
+
+          assert.equal(isApprovedForAll, true)
+
+          const balanceOfUser = await GovernanceToken.balanceOf(user)
+          const balanceOfUser2 = await GovernanceToken.balanceOf(user2)
+          /* Both user and user 2 have equal tokens */
+          assert.equal(balanceOfUser.toString(), balanceOfUser2.toString())
         })
       })
     })

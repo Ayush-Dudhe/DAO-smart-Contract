@@ -3,6 +3,7 @@ const proposalFile = "proposals.json"
 const tokenName = "DAOTOKEN"
 const tokenSymbol = "DAOT"
 const daoVersion = "1"
+const minDelay = 60
 
 module.exports = {
   developmentChains,
@@ -10,4 +11,5 @@ module.exports = {
   tokenName,
   tokenSymbol,
   daoVersion,
+  minDelay,
 }
