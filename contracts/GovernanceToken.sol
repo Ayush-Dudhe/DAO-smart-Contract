@@ -30,4 +30,8 @@ contract GovernanceToken is ERC721, EIP712, ERC721Votes {
   function _baseURI() internal pure override(ERC721) returns (string memory) {
     return "\\ipfs-token-uri";
   }
+
+  function getVotingUnits(address account) public view returns (uint256) {
+    return super._getVotingUnits(account);
+  }
 }

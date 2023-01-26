@@ -124,5 +124,23 @@ const { parse } = require("typechain")
           const NFTOwner = await GovernanceToken.ownerOf(1)
           assert.equal(deployer, NFTOwner)
         })
+
+        it("Balance of Token Owner is Correctly calculated", async function () {
+          const balanceOfUser = await GovernanceToken.balanceOf(user)
+          const balanceOfDeployer = await GovernanceToken.balanceOf(deployer)
+
+          assert.equal(balanceOfDeployer, 0)
+          assert.equal(balanceOfUser, 1)
+        })
+
+        it("Voting Units are correctly calculated", async function () {
+          const VotingUnitsOfUser = await GovernanceToken.getVotingUnits(user)
+          const VotingUnitsOfDeployer = await GovernanceToken.getVotingUnits(
+            deployer
+          )
+
+          assert.equal(VotingUnitsOfDeployer, 0)
+          assert.equal(VotingUnitsOfUser, 1)
+        })
       })
     })
