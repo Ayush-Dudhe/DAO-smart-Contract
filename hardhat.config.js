@@ -36,5 +36,8 @@ module.exports = {
     user: {
       default: 1,
     },
+    user2: {
+      default: 2,
+    },
   },
 }
