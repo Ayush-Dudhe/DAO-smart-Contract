@@ -25,3 +25,5 @@ module.exports.default = async (hre) => {
   }
   log("-----------------------------------------------------")
 }
+
+module.exports.tags = ["all", "timelock"]

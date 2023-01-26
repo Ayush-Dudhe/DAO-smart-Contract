@@ -10,10 +10,15 @@ module.exports.default = async (hre) => {
   const chainId = network.config.chainId
 
   const args = []
+  const initialFund =
+    chainId === 31337
+      ? ethers.utils.parseEther("1")
+      : ethers.utils.parseEther("0")
   const treasury = await deploy("Treasury", {
     from: deployer,
     args: args,
     log: true,
+    value: initialFund,
     // waitConfirmations: 6,
   })
 
@@ -36,3 +41,5 @@ module.exports.default = async (hre) => {
   log("Done")
   log("-----------------------------------------------------")
 }
+
+module.exports.tags = ["all", "treasury"]

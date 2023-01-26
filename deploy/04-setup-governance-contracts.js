@@ -32,3 +32,5 @@ module.exports.default = async (hre) => {
   log("Done")
   log("-----------------------------------------------------")
 }
+
+module.exports.tags = ["all"]
