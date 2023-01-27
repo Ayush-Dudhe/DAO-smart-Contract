@@ -2,6 +2,14 @@ module.exports.default = async (hre) => {
   const { getNamedAccounts, deployments } = hre
   const { deploy, log, get } = deployments
   const { deployer, user } = await getNamedAccounts()
+  const {
+    governorName,
+    votingDelay,
+    votingPeriod,
+    proposalThreshold,
+    quorumPercent,
+  } = require("../helper-hardhat-config")
+
   const chainId = network.config.chainId
 
   const addressGovernanceToken = await get("GovernanceToken")
@@ -10,10 +18,11 @@ module.exports.default = async (hre) => {
   const args = [
     addressGovernanceToken.address,
     addressTimeLock.address,
-    1,
-    50400,
-    4,
-    0,
+    votingDelay,
+    votingPeriod,
+    quorumPercent,
+    proposalThreshold,
+    governorName,
   ]
   const governor = await deploy("MyGovernor", {
     from: deployer,

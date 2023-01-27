@@ -22,9 +22,10 @@ contract MyGovernor is
     uint256 _votingDelay,
     uint256 _votingPeriod,
     uint256 _quorumPercentage,
-    uint256 _proposalThreshold
+    uint256 _proposalThreshold,
+    string memory name
   )
-    Governor("MyGovernor")
+    Governor(name)
     GovernorSettings(
       _votingDelay /* 1 block */,
       _votingPeriod /* 1 week */,
