@@ -1,5 +1,6 @@
 const { time } = require("@nomicfoundation/hardhat-network-helpers")
-const { ethers } = require("hardhat")
+const { ethers, network } = require("hardhat")
+const { developmentChains } = require("../helper-hardhat-config")
 
 module.exports.default = async (hre) => {
   const { getNamedAccounts, deployments } = hre
@@ -27,8 +28,10 @@ module.exports.default = async (hre) => {
   )
   await executorTx.wait(1)
 
-  const revokeTx = await timeLock.revokeRole(adminRole, deployer)
-  revokeTx.wait(1)
+  if (!developmentChains.includes(network.name)) {
+    const revokeTx = await timeLock.revokeRole(adminRole, deployer)
+    revokeTx.wait(1)
+  }
   log("Done")
   log("-----------------------------------------------------")
 }

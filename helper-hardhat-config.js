@@ -4,6 +4,7 @@ const tokenName = "DAOTOKEN"
 const tokenSymbol = "DAOT"
 const daoVersion = "1"
 const minDelay = 60
+const func = "releaseFunds"
 
 module.exports = {
   developmentChains,
@@ -12,4 +13,5 @@ module.exports = {
   tokenSymbol,
   daoVersion,
   minDelay,
+  func,
 }
