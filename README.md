@@ -1,4 +1,4 @@
-# Sample Hardhat Project
+# BASIC DAO SMART CONTRACT
 
 This project demonstrates a basic DAO use case. After pulling this contract take following steps -
 
@@ -19,5 +19,3 @@ REPORT_GAS=true npx hardhat test
 npx hardhat node
 npx hardhat run scripts/deploy.js
 ```
-
-# DAO-Solidity-Smart-Contracts
