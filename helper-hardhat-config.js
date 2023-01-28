@@ -9,7 +9,7 @@ const func = "releaseFunds"
 const governorName = "MyGovernor"
 const votingDelay = 1
 const votingPeriod = 50400
-const proposalThreshold = 0
+const proposalThreshold = 1
 const quorumPercent = 4
 
 module.exports = {
