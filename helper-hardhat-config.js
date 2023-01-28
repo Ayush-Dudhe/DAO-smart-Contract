@@ -8,7 +8,7 @@ const func = "releaseFunds"
 
 const governorName = "MyGovernor"
 const votingDelay = 1
-const votingPeriod = 50400
+const votingPeriod = 100
 const proposalThreshold = 1
 const quorumPercent = 4
 

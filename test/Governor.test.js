@@ -269,7 +269,127 @@ const { mine } = require("@nomicfoundation/hardhat-network-helpers")
         it("Cannot Cast Vote if Proposal is pending", async function () {
           const proposalState = await MyGovernor.state(proposalId)
           assert.equal(proposalState.toString(), "0") // Proposal State is Pending
-          // In Progress
+          await expect(MyGovernor.castVote(proposalId, 1)).to.be.revertedWith(
+            "Governor: vote not currently active"
+          )
+        })
+
+        it("Can Cast Vote if Proposal is active", async function () {
+          for (let i = 0; i < votingDelay + 1; i++) {
+            await ethers.provider.send("evm_mine")
+          }
+
+          const proposalState = await MyGovernor.state(proposalId)
+          assert.equal(proposalState.toString(), "1") // Proposal State is Pending
+          await expect(MyGovernor.castVote(proposalId, 1)).to.be.ok
+        })
+
+        it("Cannot Vote Twice", async function () {
+          for (let i = 0; i < votingDelay + 1; i++) {
+            await ethers.provider.send("evm_mine")
+          }
+
+          const proposalState = await MyGovernor.state(proposalId)
+          assert.equal(proposalState.toString(), "1") // Proposal State is Pending
+          await expect(MyGovernor.castVote(proposalId, 1)).to.be.ok
+
+          await expect(MyGovernor.castVote(proposalId, 1)).to.be.revertedWith(
+            "GovernorVotingSimple: vote already cast"
+          )
+        })
+
+        it("Cannot Vote after Voting Period is over", async function () {
+          for (let i = 0; i < votingDelay + votingPeriod + 1; i++) {
+            await ethers.provider.send("evm_mine")
+          }
+          const proposalState = await MyGovernor.state(proposalId)
+          await expect(MyGovernor.castVote(proposalId, 1)).to.be.revertedWith(
+            "Governor: vote not currently active"
+          )
+        })
+
+        it("Proposal Votes are correctly shown", async function () {
+          for (let i = 0; i < votingDelay + 1; i++) {
+            await ethers.provider.send("evm_mine")
+          }
+          const proposalState = await MyGovernor.state(proposalId)
+          const vote1 = await MyGovernor.castVote(proposalId, 1)
+
+          const proposalVotes = await MyGovernor.proposalVotes(proposalId)
+          let against, forMotion, abstain
+          ;[against, forMotion, abstain] = proposalVotes
+          assert.equal(forMotion.toString(), "1")
+        })
+
+        it("Proposal Defeated", async function () {
+          for (let i = 0; i < votingDelay + 1; i++) {
+            await ethers.provider.send("evm_mine")
+          }
+          const vote1 = await MyGovernor.castVote(proposalId, 0)
+
+          for (let i = 0; i < votingDelay + votingPeriod + 1; i++) {
+            await ethers.provider.send("evm_mine")
+          }
+
+          const proposalState = await MyGovernor.state(proposalId)
+
+          assert.equal(proposalState.toString(), "3")
+        })
+
+        it("Proposal Succeeded", async function () {
+          for (let i = 0; i < votingDelay + 1; i++) {
+            await ethers.provider.send("evm_mine")
+          }
+          const vote1 = await MyGovernor.castVote(proposalId, 1)
+
+          for (let i = 0; i < votingDelay + votingPeriod + 1; i++) {
+            await ethers.provider.send("evm_mine")
+          }
+
+          const proposalState = await MyGovernor.state(proposalId)
+
+          assert.equal(proposalState.toString(), "4")
+        })
+      })
+
+      describe("Proposal Queued", async function () {
+        let proposalId
+        beforeEach(async function () {
+          const nftMinted_2 = await GovernanceToken.mintNFT(user, 2)
+          const delegate_2 = await GovernanceToken.delegate(
+            user
+          ) /* Votes not counted till they are delegated */
+
+          const nftMinted = await GovernanceToken.mintNFT(deployer, 1)
+          const delegate = await GovernanceToken.delegate(
+            deployer
+          ) /* Votes not counted till they are delegated */
+
+          const propose = await MyGovernor.propose(
+            [Treasury.address],
+            [0],
+            [encodedFunctionCall],
+            "This is a Proposal to release funds to the user"
+          )
+
+          const proposed = await propose.wait()
+          proposalId = proposed.events[0].args[0].toString()
+
+          /* Make Proposal Success */
+          for (let i = 0; i < votingDelay + 1; i++) {
+            await ethers.provider.send("evm_mine")
+          }
+          const vote1 = await MyGovernor.castVote(proposalId, 1)
+
+          for (let i = 0; i < votingDelay + votingPeriod + 1; i++) {
+            await ethers.provider.send("evm_mine")
+          }
+
+          const proposalState = await MyGovernor.state(proposalId)
+        })
+
+        it("Proposal Can be Queued", async function () {
+          // IN PROGRESS
         })
       })
     })
