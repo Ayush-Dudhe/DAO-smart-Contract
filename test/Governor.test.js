@@ -13,6 +13,7 @@ const {
   proposalThreshold,
   quorumPercent,
   func,
+  minDelay,
 } = require("../helper-hardhat-config")
 const { assert, expect } = require("chai")
 const {
@@ -420,8 +421,12 @@ const { mine } = require("@nomicfoundation/hardhat-network-helpers")
           }
 
           const proposalState = await MyGovernor.state(proposalId)
-          const descriptionHash = keccak256(
-            toUtf8Bytes("This is a Proposal to release funds to the user")
+          // const descriptionHash = keccak256(
+          //   toUtf8Bytes("This is a Proposal to release funds to the user")
+          // )
+
+          const descriptionHash = ethers.utils.id(
+            "This is a Proposal to release funds to the user"
           )
           await expect(
             MyGovernor.queue(
@@ -431,6 +436,47 @@ const { mine } = require("@nomicfoundation/hardhat-network-helpers")
               descriptionHash
             )
           ).to.be.ok
+        })
+
+        it("Successful Proposal Can be Executed", async function () {
+          // IN PROGRESS
+
+          /* Make Proposal Success */
+          for (let i = 0; i < votingDelay + 1; i++) {
+            await ethers.provider.send("evm_mine")
+          }
+          const vote1 = await MyGovernor.castVote(proposalId, 1)
+
+          for (let i = 0; i < votingDelay + votingPeriod + 1; i++) {
+            await ethers.provider.send("evm_mine")
+          }
+
+          const proposalState = await MyGovernor.state(proposalId)
+          // const descriptionHash = keccak256(
+          //   toUtf8Bytes("This is a Proposal to release funds to the user")
+          // )
+          const descriptionHash = ethers.utils.id(
+            "This is a Proposal to release funds to the user"
+          )
+          const queued = await MyGovernor.queue(
+            [Treasury.address],
+            [0],
+            [encodedFunctionCall],
+            descriptionHash
+          )
+
+          await network.provider.send("evm_increaseTime", [minDelay + 1])
+          await network.provider.send("evm_mine")
+
+          const execute = await MyGovernor.execute(
+            [Treasury.address],
+            [0],
+            [encodedFunctionCall],
+            descriptionHash
+          )
+
+          const isFundReleased = await Treasury.isReleased()
+          assert.equal(isFundReleased, true)
         })
       })
     })
