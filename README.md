@@ -1,4 +1,4 @@
-# BASIC DAO SMART CONTRACT
+# BASIC DAO SMART CONTRACTS
 
 This project demonstrates a basic DAO use case. After pulling this contract take following steps -
 
