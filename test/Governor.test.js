@@ -16,9 +16,6 @@ const {
   minDelay,
 } = require("../helper-hardhat-config")
 const { assert, expect } = require("chai")
-const {
-  isCallTrace,
-} = require("hardhat/internal/hardhat-network/stack-traces/message-trace")
 
 const { keccak256 } = require("@ethersproject/keccak256")
 const { toUtf8Bytes } = require("@ethersproject/strings")
