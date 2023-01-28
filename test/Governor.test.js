@@ -19,6 +19,9 @@ const {
   isCallTrace,
 } = require("hardhat/internal/hardhat-network/stack-traces/message-trace")
 
+const { keccak256 } = require("@ethersproject/keccak256")
+const { toUtf8Bytes } = require("@ethersproject/strings")
+
 const { mine } = require("@nomicfoundation/hardhat-network-helpers")
 
 !developmentChains.includes(network.name)
@@ -374,6 +377,37 @@ const { mine } = require("@nomicfoundation/hardhat-network-helpers")
 
           const proposed = await propose.wait()
           proposalId = proposed.events[0].args[0].toString()
+        })
+
+        it("Un-Successful Proposal Can be Queued", async function () {
+          // IN PROGRESS
+
+          /* Make Proposal Success */
+          for (let i = 0; i < votingDelay + 1; i++) {
+            await ethers.provider.send("evm_mine")
+          }
+          const vote1 = await MyGovernor.castVote(proposalId, 0)
+
+          for (let i = 0; i < votingDelay + votingPeriod + 1; i++) {
+            await ethers.provider.send("evm_mine")
+          }
+
+          const proposalState = await MyGovernor.state(proposalId)
+          const descriptionHash = keccak256(
+            toUtf8Bytes("This is a Proposal to release funds to the user")
+          )
+          await expect(
+            MyGovernor.queue(
+              [Treasury.address],
+              [0],
+              [encodedFunctionCall],
+              descriptionHash
+            )
+          ).to.be.revertedWith("Governor: proposal not successful")
+        })
+
+        it("Successful Proposal Can be Queued", async function () {
+          // IN PROGRESS
 
           /* Make Proposal Success */
           for (let i = 0; i < votingDelay + 1; i++) {
@@ -386,10 +420,17 @@ const { mine } = require("@nomicfoundation/hardhat-network-helpers")
           }
 
           const proposalState = await MyGovernor.state(proposalId)
-        })
-
-        it("Proposal Can be Queued", async function () {
-          // IN PROGRESS
+          const descriptionHash = keccak256(
+            toUtf8Bytes("This is a Proposal to release funds to the user")
+          )
+          await expect(
+            MyGovernor.queue(
+              [Treasury.address],
+              [0],
+              [encodedFunctionCall],
+              descriptionHash
+            )
+          ).to.be.ok
         })
       })
     })
