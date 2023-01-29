@@ -12,6 +12,9 @@ const votingPeriod = 100
 const proposalThreshold = 1
 const quorumPercent = 4
 
+const numberOfBlocksToMine = 4
+const increaseBy = 80
+
 module.exports = {
   developmentChains,
   proposalFile,
@@ -25,4 +28,6 @@ module.exports = {
   votingPeriod,
   proposalThreshold,
   quorumPercent,
+  numberOfBlocksToMine,
+  increaseBy,
 }
