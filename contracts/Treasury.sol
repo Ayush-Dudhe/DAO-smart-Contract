@@ -34,7 +34,8 @@ contract Treasury is Ownable {
   ) public onlyOwner {
     require(fundsToTransfer <= totalFunds, "Insufficient Funds in treasury");
     isReleased = true;
-    payable(_payee).transfer(fundsToTransfer);
     totalFunds -= fundsToTransfer;
+    payable(_payee).transfer(fundsToTransfer);
+    // totalFunds -= fundsToTransfer;
   }
 }
