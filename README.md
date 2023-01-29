@@ -1,6 +1,6 @@
 # BASIC DAO SMART CONTRACTS
 
-This project demonstrates a basic DAO use case. After pulling this contract take following steps -
+This project demonstrates a basic DAO use case. After pulling this repository take following steps -
 
 1. Delete package-lock.json
 2. Do npm init
