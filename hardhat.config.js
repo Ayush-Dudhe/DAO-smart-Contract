@@ -44,10 +44,11 @@ module.exports = {
     },
   },
   gasReporter: {
-    enabled: false,
-    outputFile: "gas-report.txt",
+    enabled: true,
+    outputFile: "gas-report-matic.txt",
     noColors: true,
     currency: "USD",
     coinmarketcap: COIN_MARKET_CAP_API_KEY,
+    token: "MATIC",
   },
 }
