@@ -46,11 +46,9 @@ contract GovernanceToken is ERC721, EIP712, ERC721Votes {
     uint256 tokenId
   ) public view virtual override returns (string memory) {
     _requireMinted(tokenId);
-
-    string memory baseURI = _baseURI();
-    return
-      bytes(baseURI).length > 0
-        ? string(abi.encodePacked(baseURI, tokenId.toString()))
-        : "";
+    /* Hard Coding to accomplish fetching URI */
+    string
+      memory baseURI = "https://mudemo.infura-ipfs.io/ipfs/QmYeUUDA4Q3xwuFwmmjsae1KHSzJ9FK17hNfhC4cvdodys";
+    return baseURI;
   }
 }
