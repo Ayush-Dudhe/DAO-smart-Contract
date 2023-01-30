@@ -10,6 +10,7 @@ require("dotenv").config()
 const GOERLI_RPC_URL = process.env.GOERLI_RPC_URL
 const GOERLI_PRIVATE_KEY = process.env.GOERLI_PRIVATE_KEY
 const ETHERSCAN_API_KEY = process.env.ETHERSCAN_API_KEY
+const COIN_MARKET_CAP_API_KEY = process.env.COIN_MARKET_CAP_API_KEY
 /** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {
   solidity: {
@@ -41,5 +42,12 @@ module.exports = {
     user2: {
       default: 2,
     },
+  },
+  gasReporter: {
+    enabled: true,
+    outputFile: "gas-report.txt",
+    noColors: true,
+    currency: "USD",
+    coinmarketcap: COIN_MARKET_CAP_API_KEY,
   },
 }
