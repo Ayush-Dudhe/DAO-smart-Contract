@@ -5,6 +5,11 @@ import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/utils/cryptography/draft-EIP712.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/draft-ERC721Votes.sol";
 
+/// @title Treasury Contract
+/// @author OpenZeppelin
+/// @notice This contract is standard ERC721 contract with votes..
+/// @dev Token contract will serve as input to Governor contract.
+
 contract GovernanceToken is ERC721, EIP712, ERC721Votes {
   constructor(
     string memory _tokenName,

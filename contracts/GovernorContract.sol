@@ -8,6 +8,11 @@ import "@openzeppelin/contracts/governance/extensions/GovernorVotes.sol";
 import "@openzeppelin/contracts/governance/extensions/GovernorVotesQuorumFraction.sol";
 import "@openzeppelin/contracts/governance/extensions/GovernorTimelockControl.sol";
 
+/// @title Treasury Contract
+/// @author OpenZeppelin
+/// @notice This contract is the governor contract of DAO. It takes TimeLock and Token contracts as inputs. This contract contols Creation, Voting, Queueing and Execution of Proposals.
+/// @dev TimeLock and Token contracts must be deployed before this contract.
+
 contract MyGovernor is
   Governor,
   GovernorSettings,
