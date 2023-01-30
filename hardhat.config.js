@@ -7,10 +7,10 @@ require("@nomicfoundation/hardhat-chai-matchers")
 require("@nomiclabs/hardhat-ethers")
 require("dotenv").config()
 
-const GOERLI_RPC_URL = process.env.GOERLI_RPC_URL
-const GOERLI_PRIVATE_KEY = process.env.GOERLI_PRIVATE_KEY
-const ETHERSCAN_API_KEY = process.env.ETHERSCAN_API_KEY
-const COIN_MARKET_CAP_API_KEY = process.env.COIN_MARKET_CAP_API_KEY
+const GOERLI_RPC_URL = process.env.GOERLI_RPC_URL || "https://goerli.com"
+const GOERLI_PRIVATE_KEY = process.env.GOERLI_PRIVATE_KEY || "0x00"
+const ETHERSCAN_API_KEY = process.env.ETHERSCAN_API_KEY || "key"
+const COIN_MARKET_CAP_API_KEY = process.env.COIN_MARKET_CAP_API_KEY || "key"
 /** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {
   solidity: {
