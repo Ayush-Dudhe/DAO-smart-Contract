@@ -6,6 +6,7 @@ require("hardhat-gas-reporter")
 require("@nomicfoundation/hardhat-chai-matchers")
 require("@nomiclabs/hardhat-ethers")
 require("dotenv").config()
+require("solidity-coverage")
 
 const GOERLI_RPC_URL = process.env.GOERLI_RPC_URL || "https://goerli.com"
 const GOERLI_PRIVATE_KEY = process.env.GOERLI_PRIVATE_KEY || "0x00"
