@@ -29,8 +29,8 @@ module.exports.default = async (hre) => {
   await executorTx.wait(1)
 
   if (!developmentChains.includes(network.name)) {
-    const revokeTx = await timeLock.revokeRole(adminRole, deployer)
-    revokeTx.wait(1)
+    // const revokeTx = await timeLock.revokeRole(adminRole, deployer)
+    // revokeTx.wait(1)
   }
   log("Done")
   log("-----------------------------------------------------")

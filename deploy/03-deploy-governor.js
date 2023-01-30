@@ -8,6 +8,8 @@ module.exports.default = async (hre) => {
     votingPeriod,
     proposalThreshold,
     quorumPercent,
+    VERIFICATION_BLOCK_CONFIRMATIONS,
+    developmentChains,
   } = require("../helper-hardhat-config")
 
   const chainId = network.config.chainId
@@ -24,11 +26,16 @@ module.exports.default = async (hre) => {
     proposalThreshold,
     governorName,
   ]
+
+  const waitBlockConfirmations = developmentChains.includes(network.name)
+    ? 0
+    : VERIFICATION_BLOCK_CONFIRMATIONS
+
   const governor = await deploy("MyGovernor", {
     from: deployer,
     args: args,
     log: true,
-    // waitConfirmations: 6,
+    waitConfirmations: waitBlockConfirmations,
   })
 
   log("Governor Contract Deployed")

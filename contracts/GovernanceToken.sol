@@ -11,6 +11,8 @@ import "@openzeppelin/contracts/token/ERC721/extensions/draft-ERC721Votes.sol";
 /// @dev Token contract will serve as input to Governor contract.
 
 contract GovernanceToken is ERC721, EIP712, ERC721Votes {
+  using Strings for uint256;
+
   constructor(
     string memory _tokenName,
     string memory _tokenSymbol,
@@ -38,5 +40,17 @@ contract GovernanceToken is ERC721, EIP712, ERC721Votes {
 
   function getVotingUnits(address account) public view returns (uint256) {
     return super._getVotingUnits(account);
+  }
+
+  function tokenURI(
+    uint256 tokenId
+  ) public view virtual override returns (string memory) {
+    _requireMinted(tokenId);
+
+    string memory baseURI = _baseURI();
+    return
+      bytes(baseURI).length > 0
+        ? string(abi.encodePacked(baseURI, tokenId.toString()))
+        : "";
   }
 }

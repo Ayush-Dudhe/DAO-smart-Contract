@@ -1,9 +1,12 @@
 const { ethers } = require("hardhat")
+
 const {
-  experimentalAddHardhatNetworkMessageTraceHook,
-} = require("hardhat/config")
+  VERIFICATION_BLOCK_CONFIRMATIONS,
+  developmentChains,
+} = require("../helper-hardhat-config")
 
 module.exports.default = async (hre) => {
+  console.log("Deployment Begins for Treasury Contract")
   const { getNamedAccounts, deployments } = hre
   const { deploy, log, get } = deployments
   const { deployer, user } = await getNamedAccounts()
@@ -14,12 +17,17 @@ module.exports.default = async (hre) => {
     chainId === 31337
       ? ethers.utils.parseEther("1")
       : ethers.utils.parseEther("0")
+
+  const waitBlockConfirmations = developmentChains.includes(network.name)
+    ? 0
+    : VERIFICATION_BLOCK_CONFIRMATIONS
+
   const treasury = await deploy("Treasury", {
     from: deployer,
     args: args,
     log: true,
     value: initialFund,
-    // waitConfirmations: 6,
+    waitConfirmations: waitBlockConfirmations,
   })
 
   log("Treasury Contract Deployed")

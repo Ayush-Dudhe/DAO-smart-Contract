@@ -3,6 +3,8 @@ const {
   tokenName,
   tokenSymbol,
   daoVersion,
+  VERIFICATION_BLOCK_CONFIRMATIONS,
+  developmentChains,
 } = require("../helper-hardhat-config")
 
 module.exports.default = async (hre) => {
@@ -12,12 +14,16 @@ module.exports.default = async (hre) => {
 
   const chainId = network.config.chainId
 
+  const waitBlockConfirmations = developmentChains.includes(network.name)
+    ? 0
+    : VERIFICATION_BLOCK_CONFIRMATIONS
+
   const args = [tokenName, tokenSymbol, daoVersion]
   const governanceToken = await deploy("GovernanceToken", {
     from: deployer,
     args: args,
     log: true,
-    // waitConfirmations: 6,
+    waitConfirmations: waitBlockConfirmations,
   })
 
   log("GovernanceToken Contract Deployed")

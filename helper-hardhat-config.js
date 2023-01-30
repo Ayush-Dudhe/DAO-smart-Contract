@@ -15,6 +15,11 @@ const quorumPercent = 4
 const numberOfBlocksToMine = 4
 const increaseBy = 80
 
+VERIFICATION_BLOCK_CONFIRMATIONS = 6
+
+NFTMintedToAddress = "0xdD2FD4581271e230360230F9337D5c0430Bf44C0"
+TokenId = 5
+
 module.exports = {
   developmentChains,
   proposalFile,
@@ -30,4 +35,6 @@ module.exports = {
   quorumPercent,
   numberOfBlocksToMine,
   increaseBy,
+  NFTMintedToAddress,
+  TokenId,
 }
