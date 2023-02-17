@@ -9,11 +9,11 @@ require("dotenv").config()
 require("solidity-coverage")
 
 const GOERLI_RPC_URL = process.env.GOERLI_RPC_URL || "https://goerli.com"
-const GOERLI_PRIVATE_KEY = process.env.GOERLI_PRIVATE_KEY || "0x00"
+const GOERLI_PRIVATE_KEY = process.env.GOERLI_PRIVATE_KEY || "7e3dd36b8fc18643281d26682d1364d461e1f7861f7c8d53c7c033889c159a2f"
 const ETHERSCAN_API_KEY = process.env.ETHERSCAN_API_KEY || "key"
 const COIN_MARKET_CAP_API_KEY = process.env.COIN_MARKET_CAP_API_KEY || "key"
 const MATIC_TEST_RPC_URL = process.env.MATIC_TEST_RPC_URL || "https://matic.com"
-const MATIC_PRIVATE_KEY = process.env.MATIC_PRIVATE_KEY || "0x00"
+const MATIC_PRIVATE_KEY = process.env.MATIC_PRIVATE_KEY || "7e3dd36b8fc18643281d26682d1364d461e1f7861f7c8d53c7c033889c159a2f"
 /** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {
   solidity: {

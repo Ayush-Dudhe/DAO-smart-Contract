@@ -12,7 +12,7 @@ const votingPeriod = 100
 const proposalThreshold = 1
 const quorumPercent = 4
 
-const numberOfBlocksToMine = 4
+const numberOfBlocksToMine = 3
 const increaseBy = 80
 
 VERIFICATION_BLOCK_CONFIRMATIONS = 6
